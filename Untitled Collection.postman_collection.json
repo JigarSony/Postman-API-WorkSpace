@@ -1,0 +1,1472 @@
+{
+	"info": {
+		"_postman_id": "2282345a-6333-ec6c-ff4f-ea0584096872",
+		"name": "Untitled Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "09-Get-FlightResult",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"self\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:sortoptions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:filteroptions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"navigate:searchoptions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"paging:resultlist\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"update:groupedresultlist\");",
+							"",
+							"var data = JSON.parse(responseBody);",
+							"",
+							"postman.setEnvironmentVariable(\"SelectedFlightOptionIdentifier\",data._embedded.GroupedFlightOptions[0].Identifier);",
+							"",
+							"postman.setEnvironmentVariable(\"SelectedOutboundLegOptionIdentifier\",data._embedded.GroupedFlightOptions[0].LegOptionInfoLists[0].LegOptionInfos[0].Identifier);",
+							"",
+							"postman.setEnvironmentVariable(\"SelectedInboundLegOptionIdentifier\",data._embedded.GroupedFlightOptions[0].LegOptionInfoLists[1].LegOptionInfos[0].Identifier);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/FlightOptions/GroupedResultList/{{SearchFlight}}/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"FlightOptions",
+						"GroupedResultList",
+						"{{SearchFlight}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "12-Get-FlightFilterOptions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"NumberOfStopFilterOptions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"LegTimeOnlyFilterOptions\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/FlightOptions/GroupedResultList/{{SearchFlight}}/FilterOptions/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"FlightOptions",
+						"GroupedResultList",
+						"{{SearchFlight}}",
+						"FilterOptions",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02-Post-UserSession",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"/usersession/\");",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"SessionIdentifier\", jsonData.Data.substring(29));"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"UserCredentials\": {\r\n\t\t\"Name\":\"{{userName}}\",\r\n\t\t\"Password\":\"{{userPassword}}\"\r\n\t},\r\n\t\"AccountCode\" : \"{{AccountCode}}\",\r\n\t\"Digest\" : \"{{Digest}}\",\r\n\t\"UserToken\": \"\",\r\n\t\"ApplicationType\": \"{{ApplicationType}}\",\r\n\t\"CultureCode\": \"{{Culture}}\",\r\n\t\"Debug\": \"{{Debug}}\",\r\n\t\"AffiliateCode\": \"{{Affiliate}}\",\r\n\t\"ChannelCode\" : \"{{Channel}}\"\r\n}"
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/usersession/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"usersession",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "17-Post-ShoppingCart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"http://10.1.1.94/\");",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"postman.setEnvironmentVariable(\"ShoppingCartIdentifier\", jsonData.Data.substring(67));"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/ShoppingCart/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"ShoppingCart",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "01-Get-Root",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"/usersession\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{AccountCode}}",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{AccountCode}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "24-Put-SelectedFlightPassenger",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:mealpreferenceoptions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:seatpreferenceoptions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:baggageserviceoptions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"update:passenger\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n \"identifier\":\"{{PassengerIdentifier}}\",\r\n \"SelectedPerson\":\r\n  {\r\n     \"Reference\": \"{{PersonOptionIdentifier}}\",\r\n     \"GenderType\": \"Male\",\r\n     \"FirstName\": \"XMR\",\r\n     \"LastName\": \"MONTYS\",\r\n     \"DateOfBirth\": \"1987-11-06\"\r\n      },\r\n \"FrequentFlyer\":{\r\n\t\"AirlineCode\": \"{{FrequentFlyerAirlineCode}}\",\r\n\t\"FrequentFlyerNumber\": \"{{FrequentFlyerNumber}}\"\r\n\r\n\t},\r\n \"SelectedBaggageService\":null,\r\n \"SelectedSeatPreference\":null,\r\n \"SelectedMealPreference\":null\r\n}"
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/SelectedFlight/{{FlightBookingIdentifier}}/Passengers/{{PassengerIdentifier}}/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"SelectedFlight",
+						"{{FlightBookingIdentifier}}",
+						"Passengers",
+						"{{PassengerIdentifier}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "13-Get-LegOption",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"Barcelona\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"SN Brussels Airlines\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/FlightOptions/LegOption/{{SearchFlight}}/{{SelectedFlightOptionIdentifier}}/{{SelectedOutboundLegOptionIdentifier}}/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"FlightOptions",
+						"LegOption",
+						"{{SearchFlight}}",
+						"{{SelectedFlightOptionIdentifier}}",
+						"{{SelectedOutboundLegOptionIdentifier}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "22-Get-ShoppingCartCheckout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:personoptions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:paymentoptions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:countries\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"update:checkout\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/ShoppingCart/{{ShoppingCartIdentifier}}/Checkout/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"ShoppingCart",
+						"{{ShoppingCartIdentifier}}",
+						"Checkout",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "06-Get-AirportLookup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"Amsterdam\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"Schiphol\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/lookup/airports?namelike=ams",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"lookup",
+						"airports"
+					],
+					"query": [
+						{
+							"key": "namelike",
+							"value": "ams"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "31-Post-Order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"1\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"/Order/\");",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"OrderIdentifier\", jsonData.Data.substring(60));"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ExternalReference\": \"Ex-Ref-Test\",\r\n    \"CustomParameters\": [\r\n        {\r\n            \"name\": \"test0\",\r\n            \"value\": \"testvalue0\"\r\n        },\r\n        {\r\n            \"name\": \"test1\",\r\n            \"value\": \"testvalue1\"\r\n        }\r\n    ]\r\n}"
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/Order/{{ShoppingCartIdentifier}}/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"Order",
+						"{{ShoppingCartIdentifier}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "25-Put-SelectedFlightPassenger-2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:mealpreferenceoptions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:seatpreferenceoptions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:baggageserviceoptions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"update:passenger\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n \"identifier\":\"{{Passenger2Identifier}}\",\r\n \"SelectedPerson\":\r\n  {\r\n     \"Reference\": \"{{PersonOption2Identifier}}\",\r\n     \"GenderType\": \"Male\",\r\n     \"FirstName\": \"XMROne\",\r\n     \"LastName\": \"MONTYS\",\r\n     \"DateOfBirth\": \"1980-11-06\"\r\n      },\r\n \"FrequentFlyer\":{\r\n\t\"AirlineCode\": \"{{FrequentFlyerAirlineCode}}\",\r\n\t\"FrequentFlyerNumber\": \"{{FrequentFlyerNumber}}\"\r\n\t},\r\n \"SelectedBaggageService\":null,\r\n \"SelectedSeatPreference\":null,\r\n \"SelectedMealPreference\":null\r\n}\r\n"
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/SelectedFlight/{{FlightBookingIdentifier}}/Passengers/{{PassengerIdentifier}}/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"SelectedFlight",
+						"{{FlightBookingIdentifier}}",
+						"Passengers",
+						"{{PassengerIdentifier}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "18-Get-ShoppingCart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"navigate:checkout\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"add:product\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"add:additionalproduct\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/ShoppingCart/{{ShoppingCartIdentifier}}/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"ShoppingCart",
+						"{{ShoppingCartIdentifier}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "20-Put-ShoppingCartProducts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"ProductType\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/ShoppingCart/{{ShoppingCartIdentifier}}/Products/{{FlightBookingIdentifier}}/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"ShoppingCart",
+						"{{ShoppingCartIdentifier}}",
+						"Products",
+						"{{FlightBookingIdentifier}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10-Put-FlightGroupedResultListPageSize0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"/FlightOptions/SearchOptions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"LegOptionInfoLists\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/FlightOptions/GroupedResultList/{{SearchFlight}}/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"FlightOptions",
+						"GroupedResultList",
+						"{{SearchFlight}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04-Get-AirlineLookup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"508\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"Air India\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/lookup/airlines/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"lookup",
+						"airlines",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "14-Post-SelectFlight",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"SelectedFlight/\");",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"FlightBookingIdentifier\", jsonData.Data.substring(69));"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"GroupedFlightResultIdentifier\":\"{{SearchFlight}}\",\r\n\"SelectedGroupedFlightOptionIdentifier\":\"{{SelectedFlightOptionIdentifier}}\",\r\n\"SelectedLegOptionsIdentifiers\":\r\n[\"{{SelectedOutboundLegOptionIdentifier}}\",\"{{SelectedInboundLegOptionIdentifier}}\"]\r\n}"
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/SelectedFlight/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"SelectedFlight",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "29-Put-ShoppingCartCheckout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:personoptions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:paymentoptions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:countries\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"update:checkout\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"navigate:createorder\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"ContactDetails\":\r\n  {\r\n   \"Street\":\"Joop King\",\r\n   \"HouseNumber\": \"313\",\r\n   \"ZipCode\": \"1096 AA\",\r\n   \"City\": \"AMSTERDAM\",\r\n   \"CountryCode\": \"NL\",\r\n   \"EmailAddress\":\"ignore@address.com\",\r\n   \"PhoneNumber\": \"741258963\",\r\n   \"IsCompany\": false,\r\n   \"CompanyName\": \"Abcd Co.\",\r\n   \"BluebizzNumber\": \"123456\",\r\n   \"HomeStayer\":\r\n   {\r\n    \"GenderType\": \"Male\",\r\n    \"FirstName\": \"Sam\",\r\n    \"LastName\" : \"Truce\",\r\n    \"DateOfBirth\": \"1983-02-03\",\r\n    \"PhoneNumber\": \"1234567890\"\r\n   },\r\n   \"SelectedPerson\":\r\n   {\r\n    \"Reference\": \"{{PersonOptionIdentifier}}\",\r\n    \"GenderType\": \"Male\",\r\n    \"FirstName\": \"XMR\",\r\n    \"LastName\" : \"MONTYS\",\r\n    \"DateOfBirth\": \"1980-01-02\"\r\n   }\r\n   \r\n  },\r\n  \"SelectedPaymentOption\":\r\n  {\r\n   \"Code\": \"{{SelectedPaymentCode}}\"\r\n  }\r\n\r\n}"
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/ShoppingCart/{{ShoppingCartIdentifier}}/Checkout/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"ShoppingCart",
+						"{{ShoppingCartIdentifier}}",
+						"Checkout",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "19-Get-ShoppingCartProducts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"[]\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/ShoppingCart/{{ShoppingCartIdentifier}}/Products/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"ShoppingCart",
+						"{{ShoppingCartIdentifier}}",
+						"Products",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "11-Get-FlightSortOption",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"SortOptions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"Airline\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"Duration\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/FlightOptions/GroupedResultList/{{SearchFlight}}/SortOptions/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"FlightOptions",
+						"GroupedResultList",
+						"{{SearchFlight}}",
+						"SortOptions",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "32-Get-Order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"Male\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"Xmr\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"Montys\");",
+							"",
+							"// var jsonData = JSON.parse(responseBody);",
+							"// postman.setEnvironmentVariable(\"paymentLink\", jsonData.Data.substring(60));",
+							"",
+							"// postman.setEnvironmentVariable(\"PaymentGatewayURL\", jsonData.Data.substring(60));",
+							"",
+							"",
+							"",
+							"postman.clearEnvironmentVariable(\"SessionIdentifier\");",
+							"",
+							"postman.clearEnvironmentVariable(\"SearchFlight\");",
+							"",
+							"postman.clearEnvironmentVariable(\"SelectedFlightOptionIdentifier\");",
+							"",
+							"postman.clearEnvironmentVariable(\"SelectedOutboundLegOptionIdentifier\");",
+							"",
+							"postman.clearEnvironmentVariable(\"SelectedInboundLegOptionIdentifier\");",
+							"",
+							"postman.clearEnvironmentVariable(\"FlightBookingIdentifier\");",
+							"",
+							"postman.clearEnvironmentVariable(\"PassengerIdentifier\");",
+							"",
+							"postman.clearEnvironmentVariable(\"Passenger2Identifier\");",
+							"",
+							"postman.clearEnvironmentVariable(\"ShoppingCartIdentifier\");",
+							"",
+							"postman.clearEnvironmentVariable(\"PersonOptionIdentifier\");",
+							"",
+							"postman.clearEnvironmentVariable(\"PersonOption2Identifier\");",
+							"",
+							"postman.clearEnvironmentVariable(\"SelectedPaymentCode\");",
+							"",
+							"postman.clearEnvironmentVariable(\"OrderIdentifier\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/Order/{{OrderIdentifier}}/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"Order",
+						"{{OrderIdentifier}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "21-Get-ShoppingCartProductsAfterPut",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"details:products\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"details:conditions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"delete:product\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/ShoppingCart/{{ShoppingCartIdentifier}}/Products/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"ShoppingCart",
+						"{{ShoppingCartIdentifier}}",
+						"Products",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "15-Get-SelectedFlight",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:priorityboardingserviceoptions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:seatpreferenceoptions\");",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"postman.setEnvironmentVariable(\"PassengerIdentifier\", jsonData._embedded.Passengers[0].Identifier);",
+							"",
+							"postman.setEnvironmentVariable(\"Passenger2Identifier\", jsonData._embedded.Passengers[1].Identifier);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/SelectedFlight/{{FlightBookingIdentifier}}/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"SelectedFlight",
+						"{{FlightBookingIdentifier}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "27-Get-ShoppingCart-Latest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"navigate:checkout\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"add:product\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"add:additionalproduct\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/ShoppingCart/{{ShoppingCartIdentifier}}/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"ShoppingCart",
+						"{{ShoppingCartIdentifier}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "28-Get-ShoppingCartCheckoutPaymentOptions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"PayPal\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"VISA\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"AmericanExpress\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"iDEAL\");",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"SelectedPaymentCode\", jsonData.PaymentOptions[3].Code);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/ShoppingCart/{{ShoppingCartIdentifier}}/Checkout/PaymentOptions",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"ShoppingCart",
+						"{{ShoppingCartIdentifier}}",
+						"Checkout",
+						"PaymentOptions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "07-Get-FlightSearchOption",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"self\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"navigate:groupedresultlist\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:airports\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:alliances\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:airlines\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/FlightOptions/SearchOptions/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"FlightOptions",
+						"SearchOptions",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "08-Post-SearchFlight",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"FlightOptions/GroupedResultList/\");",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"SearchFlight\", jsonData.Data.substring(86));"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"PassengerAndPreferenceCriteria\":\r\n{\r\n    \"NumberOfAdults\": \"{{NumberOfAdults}}\",\r\n    \"NumberOfChildren\": \"{{NumberOfChildren}}\",\r\n    \"NumberOfInfants\": \"{{NumberOfInfants}}\",\r\n    \"CabinClass\": \"{{CabinClass}}\",\r\n    \"AirlinePreferenceCode\": \"{{AirlinePreferenceCode}}\",\r\n    \"AlliancePerferenceCode\": \"\",\r\n    \"NonstopOnly\": \"false\",\r\n    \"UseRadius\": \"false\"\r\n},\r\n\"LegCriterias\":[\r\n{\r\n    \"LegNumber\":\"0\",\r\n    \"DepartureCode\":\"{{DepartureAirportCode}}\",\r\n    \"ArrivalCode\":\"{{ArrivalAirportCode}}\",\r\n    \"DepartureDate\":\"{{DepartureDate}}\",\r\n    \"DepartureTime\":\"11:00\",\r\n    \"UseTimePreference\":\"false\"\r\n},\r\n{\r\n    \"LegNumber\":\"1\",\r\n    \"DepartureCode\":\"{{ArrivalAirportCode}}\",\r\n    \"ArrivalCode\":\"{{DepartureAirportCode}}\",\r\n    \"DepartureDate\":\"{{ReturnDate}}\",\r\n    \"DepartureTime\":\"11:00\",\r\n    \"UseTimePreference\":\"false\"\r\n}\r\n],\r\n\r\n\"CustomSearchParams\": [\r\n {\r\n    \"name\": \"CorporateCode\",\r\n    \"value\": \"221892\"\r\n }\r\n]\r\n}"
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/FlightOptions/GroupedResultList/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"FlightOptions",
+						"GroupedResultList",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "03-Get-UserSession",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:airlines\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:alliances\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:airports\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/usersession/{{SessionIdentifier}}",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"usersession",
+						"{{SessionIdentifier}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "30-Get-ShoppingCartCheckoutValidation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"[]\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"Valid\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}//{{SessionIdentifier}}/ShoppingCartCheckoutValidate/{{ShoppingCartIdentifier}}/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"",
+						"{{SessionIdentifier}}",
+						"ShoppingCartCheckoutValidate",
+						"{{ShoppingCartIdentifier}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "16-Put-SelectedFlight",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:priorityboardingserviceoptions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"BaggageServiceOptions\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"Identifier\":\"{{FlightBookingIdentifier}}\",\r\n\"TicketInsuranceOption\":\r\n {\r\n   \"Code\":\"TicketInsurance\",\r\n   \"Amount\":null,\r\n   \"IsSelected\": true\r\n }\r\n}"
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/SelectedFlight/{{FlightBookingIdentifier}}/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"SelectedFlight",
+						"{{FlightBookingIdentifier}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "05-Get-AllianceLookup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"ONEWORLD\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"STAR ALLIANCE\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"SKYTEAM\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/lookup/alliances/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"lookup",
+						"alliances",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "26-Get-SelectedFlightPassenger",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:mealpreferenceoptions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:seatpreferenceoptions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"lookup:baggageserviceoptions\");",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"update:passenger\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/SelectedFlight/{{FlightBookingIdentifier}}/Passengers/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"SelectedFlight",
+						"{{FlightBookingIdentifier}}",
+						"Passengers",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "23-Get-ShoppingCartCheckoutPersonOptions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Body matches string\"] = responseBody.has(\"/Checkout/PersonOptions\");",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"postman.setEnvironmentVariable(\"PersonOptionIdentifier\", jsonData.PersonOptions[0].Reference);",
+							"",
+							"postman.setEnvironmentVariable(\"PersonOption2Identifier\", jsonData.PersonOptions[1].Reference);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/ShoppingCart/{{ShoppingCartIdentifier}}/Checkout/PersonOptions/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"ShoppingCart",
+						"{{ShoppingCartIdentifier}}",
+						"Checkout",
+						"PersonOptions",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

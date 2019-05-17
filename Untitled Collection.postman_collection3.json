@@ -1,0 +1,135 @@
+{
+	"info": {
+		"_postman_id": "4fe9d6fd-4b03-69bc-3918-c4177a39eff4",
+		"name": "Untitled Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "31 - PaymentGateway",
+			"request": {
+				"method": "LINK",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{Ip}}:{{Port2}}/{{SessionIdentifier}}/PaymentGateway/PaymentRedirect/{{Identifier}}?{{URL}}",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port2}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"PaymentGateway",
+						"PaymentRedirect",
+						"{{Identifier}}"
+					],
+					"query": [
+						{
+							"key": "{{URL}}",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "32-Get- OrderConfirmation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"//postman.setGlobalVariable(\"PaymentGatewayURL\", jsonData._embedded.Payment._links[2]);",
+							"//postman.setGlobalVariable(\"PaymentGatewayURL\", jsonData._embedded.Payment._links.navigate.href);",
+							"//postman.setGlobalVariable(\"PaymentGatewayURL\", jsonData._embedded.Payment._links[2]);",
+							"//postman.setGlobalVariable(\"PaymentGatewayURL\", jsonData._embedded.Payment._links.\"navigate:paymentgateway\"href);",
+							"//postman.setGlobalVariable(\"PaymentGatewayURL\", jsonData._embedded.Payment._links.self.href);",
+							"//postman.setGlobalVariable(\"PaymentGatewayURL1\", {{Ip}}:{{Port}}{{SessionIdentifier}});",
+							"postman.setGlobalVariable(\"Identifier\", jsonData._embedded.Payment.Identifier);",
+							"",
+							"//postman.setGlobalVariable(\"Port2\", \"4442\");",
+							"",
+							"//postman.setGlobalVariable(\"URL\", \"successurl=http://www.google.com&failureurl=http://www.yahoo.com&errorurl=http://www.rediff.com\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/{{OrderIdentifier}}/Confirmation/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"{{OrderIdentifier}}",
+						"Confirmation",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "33-Get- OrderSummary",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"//postman.setGlobalVariable(\"PaymentGatewayURL\", jsonData._embedded.Payment._links[2]);",
+							"//postman.setGlobalVariable(\"PaymentGatewayURL\", jsonData._embedded.Payment._links.navigate.href);",
+							"//postman.setGlobalVariable(\"PaymentGatewayURL\", jsonData._embedded.Payment._links[2]);",
+							"//postman.setGlobalVariable(\"PaymentGatewayURL\", jsonData._embedded.Payment._links.\"navigate:paymentgateway\"href);",
+							"//postman.setGlobalVariable(\"PaymentGatewayURL\", jsonData._embedded.Payment._links.self.href);",
+							"//postman.setGlobalVariable(\"PaymentGatewayURL1\", {{Ip}}:{{Port}}{{SessionIdentifier}});",
+							"postman.setGlobalVariable(\"Identifier\", jsonData._embedded.Payment.Identifier);",
+							"",
+							"//postman.setGlobalVariable(\"Port2\", \"4442\");",
+							"",
+							"//postman.setGlobalVariable(\"URL\", \"successurl=http://www.google.com&failureurl=http://www.yahoo.com&errorurl=http://www.rediff.com\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/{{OrderIdentifier}}/Summary/",
+					"host": [
+						"{{Ip}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"{{SessionIdentifier}}",
+						"{{OrderIdentifier}}",
+						"Summary",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

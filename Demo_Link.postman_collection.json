@@ -1,0 +1,81 @@
+{
+	"info": {
+		"_postman_id": "a5435843-c72d-d823-ada8-006de0183def",
+		"name": "Demo_Link",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Demo",
+			"item": [
+				{
+					"name": "https://www.w3schools.com/html/html_paragraphs.asp",
+					"request": {
+						"method": "LINK",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "https://www.w3schools.com/html/html_paragraphs.asp",
+							"protocol": "https",
+							"host": [
+								"www",
+								"w3schools",
+								"com"
+							],
+							"path": [
+								"html",
+								"html_paragraphs.asp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "https://www.flipkart.com/mobiles/~redmi-note-4/pr?sid=tyy%2C4io&fm=merchandising&iid=M_236272a9-a544-4d75-aa5a-366b1bc8d69c_2.MK19JFONQT&otracker=hp_omu_Top+Offers_1_From+%E2%82%B99%2C999_MK19JFONQT_0&cid=MK19JFONQT",
+					"request": {
+						"method": "LINK",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "https://www.flipkart.com/mobiles/~redmi-note-4/pr?sid=tyy%2C4io&fm=merchandising&iid=M_236272a9-a544-4d75-aa5a-366b1bc8d69c_2.MK19JFONQT&otracker=hp_omu_Top+Offers_1_From+%E2%82%B99%2C999_MK19JFONQT_0&cid=MK19JFONQT",
+							"protocol": "https",
+							"host": [
+								"www",
+								"flipkart",
+								"com"
+							],
+							"path": [
+								"mobiles",
+								"~redmi-note-4",
+								"pr"
+							],
+							"query": [
+								{
+									"key": "sid",
+									"value": "tyy%2C4io"
+								},
+								{
+									"key": "fm",
+									"value": "merchandising"
+								},
+								{
+									"key": "iid",
+									"value": "M_236272a9-a544-4d75-aa5a-366b1bc8d69c_2.MK19JFONQT"
+								},
+								{
+									"key": "otracker",
+									"value": "hp_omu_Top+Offers_1_From+%E2%82%B99%2C999_MK19JFONQT_0"
+								},
+								{
+									"key": "cid",
+									"value": "MK19JFONQT"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

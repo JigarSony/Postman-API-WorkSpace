@@ -1,0 +1,1839 @@
+{
+	"info": {
+		"_postman_id": "efd8dac2-9c4c-955e-4753-c5d6af6daabc",
+		"name": "Untitled Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Lowcost",
+			"item": [
+				{
+					"name": "1_Get-Root",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Valid HTTP Status code ",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Body matches string\"] = responseBody.has(\"/usersession\");",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{Accountcode}}",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{Accountcode}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2_Post-usersession",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"postman.setEnvironmentVariable(\"userName\", \"WEBAPI_Test\");",
+									"",
+									"postman.setEnvironmentVariable(\"userPassword\", \"secret\");",
+									"",
+									"//postman.setEnvironmentVariable(\"AccountCode\", \"MontysAccount\");",
+									"",
+									"postman.setEnvironmentVariable(\"Digest\", \"Frxg39Q9x2IVQEoRzhYpzw==\");",
+									"",
+									"postman.setEnvironmentVariable(\"ApplicationType\", \"WebApi\");",
+									"",
+									"postman.setEnvironmentVariable(\"Culture\", \"1043\");",
+									"",
+									"postman.setEnvironmentVariable(\"Debug\", \"false\");",
+									"",
+									"postman.setEnvironmentVariable(\"Affiliate\", \"Vliegticketsnl\");",
+									"",
+									"postman.setEnvironmentVariable(\"Channel\", \"ch\");"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Valid HTTP Status code ",
+									"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+									"",
+									"tests[\"Body matches string\"] = responseBody.has(\"/usersession\");",
+									"tests[\"Location\"] = postman.getResponseHeader(\"Location\");",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"",
+									"postman.setGlobalVariable(\"SessionIdentifier\", jsonData.Data.substring(36));",
+									" "
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"UserCredentials\": {\r\n\t\t\"Name\":\"{{userName}}\",\r\n\t\t\"Password\":\"{{userPassword}}\"\r\n\t},\r\n\t\"AccountCode\" : \"{{AccountCode}}\",\r\n\t\"Digest\" : \"{{Digest}}\",\r\n\t\"UserToken\": \"\",\r\n\t\"ApplicationType\": \"{{ApplicationType}}\",\r\n\t\"CultureCode\": \"{{Culture}}\",\r\n\t\"Debug\": \"{{Debug}}\",\r\n\t\"AffiliateCode\": \"{{Affiliate}}\",\r\n\t\"ChannelCode\" : \"{{Channel}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/usersession/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"usersession",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3_Get-Usersession",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Valid HTTP Status code ",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"//tests[\"Body matches string\"] = responseBody.has(\"/usersession\");",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/usersession/{{SessionIdentifier}}",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"usersession",
+								"{{SessionIdentifier}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4_Get-airlinelookup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data =jsonData._links;",
+									"tests[\"selfLink is not null\"] = postman.getGlobalVariable(\"selfLink\") !== null;",
+									"tests[\"Airlines is not null\"] = postman.getGlobalVariable(\"lookup:airlines\") !==null ;",
+									"//Valid HTTP Status code ",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/usersession/{{SessionIdentifier}}",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"usersession",
+								"{{SessionIdentifier}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5_Get-Alliance lookup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Crear selfLink",
+									"postman.clearEnvironmentVariable(\"selfLink\");",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data =jsonData._links;",
+									"tests[\"selfLink is not null\"] = postman.getGlobalVariable(\"selfLink\") !== null;",
+									"tests[\"Airlines is not null\"] = postman.getGlobalVariable(\"lookup:alliances\") !==null ;",
+									"//Valid HTTP Status code ",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/lookup/alliances/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"lookup",
+								"alliances",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6_Get-Airportlookup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Crear selfLink",
+									"postman.clearEnvironmentVariable(\"selflink\");",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data =jsonData._links;",
+									"tests[\"selfLink is not null\"] = postman.getGlobalVariable(\"selfLink\") !== null;",
+									"tests[\"Airlines is not null\"] = postman.getGlobalVariable(\"lookup:airports\") !==null ;",
+									"//Valid HTTP Status code ",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/lookup/airports?namelike=ams",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"lookup",
+								"airports"
+							],
+							"query": [
+								{
+									"key": "namelike",
+									"value": "ams"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7_Get-countrylookup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Clear selfLink",
+									"postman.clearEnvironmentVariable(\"selflink\");",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data =jsonData._links;",
+									"tests[\"selfLink is not null\"] = postman.getGlobalVariable(\"selflink\") !== null;",
+									"tests[\"selfLink is not null\"] = postman.getGlobalVariable(\"lookup:countries\") !== null;",
+									"//Valid HTTP Status code ",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/lookup/alliances/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"lookup",
+								"alliances",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8_Get-FlightSearchoption",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Clear selfLink",
+									"postman.clearEnvironmentVariable(\"selfLink\");",
+									"//Valid HTTP Status code",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Body matches string\"] = responseBody.has(\"SearchOptions\");",
+									"",
+									"//Assert links",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data =jsonData._links;",
+									"tests[\"selfLink is not null\"] = postman.setGlobalVariable(\"selfLink\") !== null;",
+									"tests[\"groupedresultlistLink  is not null\"] = postman.setGlobalVariable(\"navigate:groupedresultlistlink\") !== null;",
+									"tests[\"airportsLink is not null\"] = postman.setGlobalVariable(\"lookup:airportslink\") !== null;",
+									"tests[\"alliancesLink is not null\"] = postman.setGlobalVariable(\"lookup:allianceslink\") !== null;",
+									"tests[\"airlinesLink is not null\"] = postman.setGlobalVariable(\"lookup:airlineslink\") !== null;",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/FlightOptions/SearchOptions/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"FlightOptions",
+								"SearchOptions",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9_Post-searchflight",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"postman.setEnvironmentVariable(\"NumberOfAdults\", \"2\");",
+									"",
+									"postman.setEnvironmentVariable(\"NumberOfChildren\", \"0\");",
+									"",
+									"postman.setEnvironmentVariable(\"NumberOfInfants\", \"0\");",
+									"",
+									"postman.setEnvironmentVariable(\"AirlinePreferenceCode\", \"\");",
+									"",
+									"postman.setEnvironmentVariable(\"DepartureAirportCode\", \"AMS\");",
+									"",
+									"postman.setEnvironmentVariable(\"ArrivalAirportCode\", \"BCN\");",
+									"",
+									"postman.setEnvironmentVariable(\"DepartureDate\", \"16 Oct 2017\");",
+									"",
+									"postman.setEnvironmentVariable(\"ReturnDate\", \"23 Oct 2017\");"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Clear Link",
+									"postman.clearEnvironmentVariable(\"selfLink\");",
+									"postman.clearEnvironmentVariable(\"groupedresultlistLink\");",
+									"postman.clearEnvironmentVariable(\"airportsLink\");",
+									"postman.clearEnvironmentVariable(\"alliancesLink\");",
+									"postman.clearEnvironmentVariable(\"airlinesLink\");",
+									"//Valid HTTP Status code",
+									"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+									"tests[\"Body matches string\"] = responseBody.has(\"GroupedResultList\");",
+									"",
+									"//Read this value into a parameter",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setGlobalVariable(\"SearchFlight\", jsonData.Data.substring(93));",
+									"",
+									" //Takes one of the elements of the response Header",
+									"tests[\"Location is present\"] = postman.getResponseHeader(\"Location\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"PassengerAndPreferenceCriteria\":\r\n{\r\n    \"NumberOfAdults\": \"{{NumberOfAdults}}\",\r\n    \"NumberOfChildren\": \"{{NumberOfChildren}}\",\r\n    \"NumberOfInfants\": \"{{NumberOfInfants}}\",\r\n    \"CabinClass\": \"{{CabinClass}}\",\r\n    \"AirlinePreferenceCode\": \"{{AirlinePreferenceCode}}\",\r\n    \"AlliancePerferenceCode\": \"\",\r\n    \"NonstopOnly\": \"false\",\r\n    \"UseRadius\": \"false\"\r\n},\r\n\"LegCriterias\":[\r\n{\r\n    \"LegNumber\":\"0\",\r\n    \"DepartureCode\":\"{{DepartureAirportCode}}\",\r\n    \"ArrivalCode\":\"{{ArrivalAirportCode}}\",\r\n    \"DepartureDate\":\"{{DepartureDate}}\",\r\n    \"DepartureTime\":\"11:00\",\r\n    \"UseTimePreference\":\"false\"\r\n},\r\n{\r\n    \"LegNumber\":\"1\",\r\n    \"DepartureCode\":\"{{ArrivalAirportCode}}\",\r\n    \"ArrivalCode\":\"{{DepartureAirportCode}}\",\r\n    \"DepartureDate\":\"{{ReturnDate}}\",\r\n    \"DepartureTime\":\"11:00\",\r\n    \"UseTimePreference\":\"false\"\r\n}\r\n],\r\n\r\n\"CustomSearchParams\": [\r\n {\r\n    \"name\": \"CorporateCode\",\r\n    \"value\": \"221892\"\r\n }\r\n]\r\n}"
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/FlightOptions/GroupedResultList/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"FlightOptions",
+								"GroupedResultList",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "10_Get-FlightResult",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Valid HTTP Status code",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"//Link assertion",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data = jsonData._links;",
+									"",
+									"tests[\"selfLink is not null\"] = postman.getGlobalVariable(\"selflink\") !== null;",
+									"tests[\"sortoptionslistLink is not null\"] = postman.setGlobalVariable(\"lookup:sortoptionslistlink\") !== null;",
+									"tests[\"filteroptionsLink is not null\"] = postman.setGlobalVariable(\"lookup:filteroptionslink\") !== null;",
+									"tests[\"searchoptionsLink is not null\"] = postman.setGlobalVariable(\"navigate:searchoptionslink\") !== null;",
+									"tests[\"resultlistLink is not null\"] = postman.setGlobalVariable(\"paging:resultlistlink\") !== null;",
+									"tests[\"groupedresultLink is not null\"] = postman.setGlobalVariable(\"update:groupedresultlistlink\") !== null;",
+									"",
+									"var data = [];",
+									"data = jsonData._embedded.GroupedFlightOptions[0]._links;",
+									"tests[\"selectflightLink is not null\"] = postman.setGlobalVariable(\"navigate:selectflight\") !== null;",
+									"tests[\"selfLink is not null\"] = postman.setGlobalVariable(\"selfLink\") !== null;",
+									"",
+									"data = jsonData._embedded;",
+									"tests[\"GroupedFlightOptions is not null\"] =(\"GroupedFlightOptions\",data[\"GroupedFlightOptions\"] > \"0\");",
+									"",
+									"",
+									"data = jsonData._embedded.GroupedFlightOptions[0].LegOptionInfoLists[0].LegOptionInfos[0]._links;",
+									"tests[\"legoptionoutboiundLink is not null\"] = postman.setGlobalVariable(\"legoptionoutboiundlink\", data[\"self\"].href) !== null;",
+									"data = jsonData._embedded.GroupedFlightOptions[0].LegOptionInfoLists[1].LegOptionInfos[0]._links;",
+									"tests[\"legoptioninboundLink is not null\"] = postman.setGlobalVariable(\"legoptioninboundlink\", data[\"self\"].href) !== null;",
+									"",
+									"//Read this value into a parameter",
+									"postman.setGlobalVariable(\"SelectedFlightOptionIdentifier\", jsonData._embedded.GroupedFlightOptions[0].Identifier);",
+									"",
+									"",
+									"postman.setGlobalVariable(\"SelectedOutboundLegOptionIdentifier\", jsonData._embedded.GroupedFlightOptions[0].LegOptionInfoLists[0].LegOptionInfos[0].Identifier);",
+									"",
+									"",
+									"postman.setGlobalVariable(\"SelectedInboundLegOptionIdentifier\", jsonData._embedded.GroupedFlightOptions[0].LegOptionInfoLists[1].LegOptionInfos[0].Identifier);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/FlightOptions/GroupedResultList/{{SearchFlight}}/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"FlightOptions",
+								"GroupedResultList",
+								"{{SearchFlight}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "13_Get-LegOption",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Clear Link",
+									"postman.clearEnvironmentVariable(\"selfLink\");",
+									"postman.clearEnvironmentVariable(\"sortoptionslistLink\");",
+									"postman.clearEnvironmentVariable(\"filteroptionsLink\");",
+									"postman.clearEnvironmentVariable(\"searchoptionsLink\");",
+									"postman.clearEnvironmentVariable(\"resultlistLink\");",
+									"postman.clearEnvironmentVariable(\"groupedresultLink\");",
+									"postman.clearEnvironmentVariable(\"selectflightLink\");",
+									"postman.clearEnvironmentVariable(\"legoptionoutboiundLink\");",
+									"postman.clearEnvironmentVariable(\"legoptioninboundLink\");",
+									"",
+									"",
+									"//Valid HTTP Status code",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"//self",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data = jsonData._links;",
+									"tests[\"selfLink is not null\"] = postman.setGlobalVariable(\"selfLink\", data[\"self\"].href) !== null;",
+									"//Segments",
+									"var data = [];",
+									"data = jsonData;",
+									"tests[\"Segments is not null\"] = postman.setGlobalVariable(\"Segments\", data[\"Segments\"]) !== null;",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/FlightOptions/LegOption/{{SearchFlight}}/{{SelectedFlightOptionIdentifier}}/{{SelectedOutboundLegOptionIdentifier}}/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"FlightOptions",
+								"LegOption",
+								"{{SearchFlight}}",
+								"{{SelectedFlightOptionIdentifier}}",
+								"{{SelectedOutboundLegOptionIdentifier}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "14_Post-SelectFlight",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Clear Link",
+									"postman.clearEnvironmentVariable(\"selfLink\");",
+									"postman.clearEnvironmentVariable(\"Segments\");",
+									"//Valid HTTP Status code",
+									"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+									"",
+									"//Read this value into a parameter",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setGlobalVariable(\"FlightBookingIdentifier\", jsonData.Data.substring(76));",
+									"",
+									"//Takes one of the elements of the response Header",
+									"tests[\"Location is present\"] = postman.getResponseHeader(\"Location\");",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"GroupedFlightResultIdentifier\":\"{{SearchFlight}}\",\r\n\"SelectedGroupedFlightOptionIdentifier\":\"{{SelectedFlightOptionIdentifier}}\",\r\n\"SelectedLegOptionsIdentifiers\":\r\n[\"{{SelectedOutboundLegOptionIdentifier}}\",\"{{SelectedInboundLegOptionIdentifier}}\"]\r\n}"
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/SelectedFlight/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"SelectedFlight",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "15_Get-SelectedFlight",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Crearing environment variable",
+									"postman.clearEnvironmentVariable(\"selflink\");",
+									"",
+									"//Valid HTTP Status code",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"//Assert Links",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data =jsonData._links;",
+									"tests[\"selflink is not null\"]=postman.setGlobalVariable(\"selflink\",data[\"self\"].href) !== null;",
+									"",
+									"tests[\"priorityboardingserviceoptions is not null\"]=postman.setGlobalVariable(\"selflink\",data[\"lookup:priorityboardingserviceoptions\"].href) !== null;",
+									"//Airline",
+									"var data = [];",
+									"data = jsonData;",
+									"tests[\"Airline is not null\"] = postman.setGlobalVariable(\"Airline\", data[\"Airline\"]) !== null;",
+									"",
+									"//TotalPrice",
+									"var data = [];",
+									"data = jsonData;",
+									"tests[\"TotalPrice is not null\"] = postman.setGlobalVariable(\"TotalPrice\", data[\"TotalPrice\"]) !== null;",
+									"",
+									"//PaxPrices",
+									"var data = [];",
+									"data = jsonData;",
+									"tests[\"PaxPrices is not null\"] = postman.setGlobalVariable(\"PaxPrices\", data[\"PaxPrices\"]) !== null ;",
+									"",
+									"//SelectedLegs",
+									"var data = [];",
+									"data = jsonData;",
+									"tests[\"SelectedLegs is not null\"] = postman.setGlobalVariable(\"SelectedLegs\", data[\"SelectedLegs\"]) !== null ;",
+									"",
+									"//assert passengers",
+									"var data = [];",
+									"data = jsonData._embedded.Passengers[0]._links;",
+									"tests[\"PassengersselfLink is not null\"] = postman.setGlobalVariable(\"PassengersselfLink\", data[\"self\"].href) !== null;",
+									"",
+									"tests[\"mealpreferenceoptionsLink is not null\"] = postman.setGlobalVariable(\"mealpreferenceoptionsLink\",data[\"lookup:mealpreferenceoptions\"].href) !== null;",
+									"tests[\"seatpreferenceoptionsLink is not null\"] = postman.setGlobalVariable(\"seatpreferenceoptionsLink\",data[\"lookup:seatpreferenceoptions\"].href) !== null;",
+									"tests[\"baggageServiceLink is not null\"] = postman.setGlobalVariable(\"baggageServiceLink\",data[\"lookup:baggageserviceoptions\"].href) !== null;",
+									"tests[\"passengerLink is not null\"] = postman.setGlobalVariable(\"passengerLink\",data[\"update:passenger\"].href) !== null;",
+									"//assert selected priority boarding service for passenger",
+									"tests[\"SelectedBaggageService and SelectedSeatPreference are  null\"]= (jsonData._embedded.Passengers[0].SelectedBaggageService === null && jsonData._embedded.Passengers[0].SelectedSeatPreference === null && jsonData._embedded.Passengers[0].SelectedMealPreference === null)",
+									"",
+									"//assert selected priority boarding service for passenger",
+									"tests[\"SelectedPriorityBoardingService is null\"]= (jsonData.SelectedPriorityBoardingService === null);",
+									"",
+									"",
+									"//Read this value into a parameter",
+									"postman.setGlobalVariable(\"PassengerIdentifier\", jsonData._embedded.Passengers[0].Identifier);",
+									"if(jsonData._embedded.Passengers > \"1\")",
+									"{",
+									"postman.setGlobalVariable(\"Passenger2Identifier\", jsonData._embedded.Passengers[1].Identifier);",
+									"}",
+									"",
+									"",
+									"//postman.setGlobalVariable(\"PassengerIdentifier\", jsonData._embedded.Passengers[0].Identifier);",
+									"",
+									"//postman.setGlobalVariable(\"Passenger2Identifier\", jsonData._embedded.Passengers[1].Identifier);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/SelectedFlight/{{FlightBookingIdentifier}}/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"SelectedFlight",
+								"{{FlightBookingIdentifier}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "16_Put-SelectedFlight",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Crearing environment variable",
+									"postman.clearEnvironmentVariable(\"selfLink\");",
+									"postman.clearEnvironmentVariable(\"Airline\");",
+									"postman.clearEnvironmentVariable(\"TotalPrice\");",
+									"postman.clearEnvironmentVariable(\"PaxPrices\");",
+									"postman.clearEnvironmentVariable(\"SelectedLegs\");",
+									"postman.clearEnvironmentVariable(\"PassengersselfLink\");",
+									"postman.clearEnvironmentVariable(\"Passengers\");",
+									"postman.clearEnvironmentVariable(\"mealpreferenceoptionsLink\");",
+									"postman.clearEnvironmentVariable(\"seatpreferenceoptionsLink\");",
+									"postman.clearEnvironmentVariable(\"passengerLink\");",
+									"",
+									"",
+									"",
+									"//Valid HTTP Status code",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"//Assert Links",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data =jsonData._links;",
+									"tests[\"selflink is not null\"]=postman.setGlobalVariable(\"selflink\",data[\"self\"].href) !== null;",
+									"",
+									"tests[\"priorityboardingserviceoptions is not null\"]=postman.setGlobalVariable(\"selflink\",data[\"lookup:priorityboardingserviceoptions\"].href) !== null;",
+									"//Airline",
+									"var data = [];",
+									"data = jsonData;",
+									"tests[\"Airline is not null\"] = postman.setGlobalVariable(\"Airline\", data[\"Airline\"]) !== null;",
+									"",
+									"//TotalPrice",
+									"var data = [];",
+									"data = jsonData;",
+									"tests[\"TotalPrice is not null\"] = postman.setGlobalVariable(\"TotalPrice\", data[\"TotalPrice\"]) !== null;",
+									"",
+									"//PaxPrices",
+									"var data = [];",
+									"data = jsonData;",
+									"tests[\"PaxPrices is not null\"] = postman.setGlobalVariable(\"PaxPrices\", data[\"PaxPrices\"]) !== null ;",
+									"",
+									"//SelectedLegs",
+									"var data = [];",
+									"data = jsonData;",
+									"tests[\"SelectedLegs is not null\"] = postman.setGlobalVariable(\"SelectedLegs\", data[\"SelectedLegs\"]) !== null ;",
+									"",
+									"//assert passengers",
+									"var data = [];",
+									"data = jsonData._embedded.Passengers[0]._links;",
+									"tests[\"Passengers is not null\"] = postman.setGlobalVariable(\"Passengers\", data[\"Passengers\"]) !== null;",
+									"",
+									"tests[\"mealpreferenceoptionsLink is not null\"] = postman.setGlobalVariable(\"mealpreferenceoptionsLink\",data[\"lookup:mealpreferenceoptions\"].href) !== null;",
+									"tests[\"seatpreferenceoptionsLink is not null\"] = postman.setGlobalVariable(\"seatpreferenceoptionsLink\",data[\"lookup:seatpreferenceoptions\"].href) !== null;",
+									"",
+									"tests[\"passengerLink is not null\"] = postman.setGlobalVariable(\"passengerLink\",data[\"update:passenger\"].href) !== null;",
+									"//assert selected priority boarding service for passenger",
+									"tests[\"SelectedBaggageService and SelectedSeatPreference are  null\"]= (jsonData._embedded.Passengers[0].SelectedBaggageService === null && jsonData._embedded.Passengers[0].SelectedSeatPreference === null && jsonData._embedded.Passengers[0].SelectedMealPreference === null)",
+									"",
+									"//assert selected priority boarding service for passenger",
+									"tests[\"SelectedPriorityBoardingService is null\"]= (jsonData.SelectedPriorityBoardingService === null);",
+									"",
+									"",
+									"//Read this value into a parameter",
+									"postman.setGlobalVariable(\"PassengerIdentifier\", jsonData._embedded.Passengers[0].Identifier);",
+									"if(jsonData._embedded.Passengers > \"1\")",
+									"{",
+									"postman.setGlobalVariable(\"Passenger2Identifier\", jsonData._embedded.Passengers[1].Identifier);",
+									"}",
+									"",
+									"",
+									"//postman.setGlobalVariable(\"PassengerIdentifier\", jsonData._embedded.Passengers[0].Identifier);",
+									"",
+									"//postman.setGlobalVariable(\"Passenger2Identifier\", jsonData._embedded.Passengers[1].Identifier);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"Identifier\":\"{{FlightBookingIdentifier}}\",\r\n\"TicketInsuranceOption\":\r\n {\r\n   \"Code\":\"TicketInsurance\",\r\n   \"Amount\":null,\r\n   \"IsSelected\": true\r\n }\r\n}"
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/SelectedFlight/{{FlightBookingIdentifier}}/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"SelectedFlight",
+								"{{FlightBookingIdentifier}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "17_Post-shoppingCart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Crearing environment variable",
+									"postman.clearEnvironmentVariable(\"selfLink\");",
+									"postman.clearEnvironmentVariable(\"Airline\");",
+									"postman.clearEnvironmentVariable(\"TotalPrice\");",
+									"postman.clearEnvironmentVariable(\"PaxPrices\");",
+									"postman.clearEnvironmentVariable(\"SelectedLegs\");",
+									"postman.clearEnvironmentVariable(\"Passengers\");",
+									"postman.clearEnvironmentVariable(\"mealpreferenceoptionsLink\");",
+									"postman.clearEnvironmentVariable(\"seatpreferenceoptionsLink\");",
+									"postman.clearEnvironmentVariable(\"passengerLink\");",
+									"",
+									"//Valid HTTP Status code",
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"//Takes one of the elements of the response Header",
+									"tests[\"Location is present\"] = postman.getResponseHeader(\"Location\");",
+									"",
+									"//Read this value into a parameter",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setGlobalVariable(\"shoppingCartIdentifier\", jsonData.Data.substring(74));",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/shoppingCart",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"shoppingCart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "18_Get-shoppingCart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Valid HTTP Status code",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Body matches string\"] = responseBody.has(\"ShoppingCart\");",
+									"",
+									"//Assert links",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data = jsonData._links;",
+									"tests[\"selfLink is not null\"] = postman.setGlobalVariable(\"selfLink\", data[\"self\"].href) !== null;",
+									"tests[\"checkoutLink is not null\"] = postman.setGlobalVariable(\"checkoutLink\", data[\"navigate:checkout\"].href) !== null;",
+									"tests[\"productLink is not null\"] = postman.setGlobalVariable(\"productLink\", data[\"add:product\"].href) !== null;",
+									"tests[\"additionalproductLink is not null\"] = postman.setGlobalVariable(\"additionalproductLink\", data[\"add:additionalproduct\"].href) !== null; ",
+									"",
+									"//data = jsonData._embedded;",
+									"//tests[\"Products is null\"] = (jsonData._embedded.Products===null)",
+									"//tests[\"AdditionalProducts is null\"] = (jsonData._embedded.AdditionalProductOptionList===null)"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/shoppingcart/{{shoppingCartIdentifier}}",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"shoppingcart",
+								"{{shoppingCartIdentifier}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "19_Get-shoppingCartProducts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Crearing environment variable",
+									"postman.clearEnvironmentVariable(\"selfLink\");",
+									"postman.clearEnvironmentVariable(\"productLink\");",
+									"postman.clearEnvironmentVariable(\"additionalproductLink\");",
+									"",
+									"//Valid HTTP Status code",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Body matches string\"] = responseBody.has(\"[]\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/ShoppingCart/{{shoppingCartIdentifier}}/Products",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"ShoppingCart",
+								"{{shoppingCartIdentifier}}",
+								"Products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "20_Put-ShoppingCartProducts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Valid HTTP Status code",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Body matches string\"] != responseBody.has(\"[]\");",
+									"",
+									"",
+									"//Assert links",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data = jsonData._links;",
+									"tests[\"selfLink is not null\"] = postman.setGlobalVariable(\"selfLink\", data[\"self\"].href) !== null;",
+									"tests[\"conditionsLink is not null\"] = postman.setGlobalVariable(\"conditionsLink\", data[\"details:conditions\"].href) !== null;",
+									"tests[\"productsLink is not null\"] = postman.setGlobalVariable(\"productsLink\", data[\"details:products\"].href) !== null;",
+									"tests[\"deleteproductLink is not null\"] = postman.setGlobalVariable(\"deleteproductLink\", data[\"delete:product\"].href) !== null;",
+									"",
+									"",
+									"",
+									"//Read this value into a parameter"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/ShoppingCart/{{shoppingCartIdentifier}}/Products//{{FlightBookingIdentifier}}",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"ShoppingCart",
+								"{{shoppingCartIdentifier}}",
+								"Products",
+								"",
+								"{{FlightBookingIdentifier}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "21_Get-ShoppingCartProductsAfterPut",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Crearing environment variable",
+									"postman.clearEnvironmentVariable(\"selfLink\");",
+									"postman.clearEnvironmentVariable(\"productLink\");",
+									"postman.clearEnvironmentVariable(\"additionalproductLink\");",
+									"",
+									"//Valid HTTP Status code",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Body matches string\"] != responseBody.has(\"[]\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/ShoppingCart/{{shoppingCartIdentifier}}/Products/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"ShoppingCart",
+								"{{shoppingCartIdentifier}}",
+								"Products",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "22_Get-shoppingCartCheckout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Valid HTTP Status code",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Body matches string\"] = responseBody.has(\"ShoppingCart\");",
+									"",
+									"",
+									"//Assert links",
+									"",
+									"//def isCompany = jsonObj.ContactDetails.IsCompany",
+									"//log.info isCompany",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data = jsonData._links;",
+									"tests[\"selfLink is not null\"] = postman.setGlobalVariable(\"selfLink\", data[\"self\"].href) !== null;",
+									"tests[\"PersonoptionsLink is not null\"] = postman.setGlobalVariable(\"personoptionsLink\", data[\"lookup:personoptions\"].href) !== null;",
+									"tests[\"PaymentoptionssLink is not null\"] = postman.setGlobalVariable(\"PaymentoptionssLink\", data[\"lookup:paymentoptions\"].href) !== null;",
+									"tests[\"CountriesLinkLink is not null\"] = postman.setGlobalVariable(\"CountriesLink\", data[\"lookup:countries\"].href) !== null;",
+									"tests[\"checkoutLink is not null\"] = postman.setGlobalVariable(\"checkoutLink\", data[\"update:checkout\"].href) !== null;",
+									"tests[\"validatecheckoutLink is not null\"] = postman.setGlobalVariable(\"validatecheckoutLink\", data[\"validate:checkout\"]) !== null;",
+									"",
+									"var data = [];",
+									"data = jsonData.ContactDetails;",
+									"tests[\"ContactDetails is not null\"] = postman.setGlobalVariable(\"ContactDetails\", data[\"ContactDetails\"]) !== null;",
+									"var data = [];",
+									"// data = jsonData;",
+									"// tests[\"SelectedPaymentOption is null\"] = postman.setGlobalVariable(\"SelectedPaymentOption\", data[\"SelectedPaymentOption\"]) === null;",
+									"",
+									"//Read this value into a parameter",
+									"var data = [];",
+									"data = jsonData.ContactDetails;",
+									"postman.setGlobalVariable(\"IsCompanyFlag\", data[\"IsCompanyFlag\"]);",
+									"",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/ShoppingCart/{{shoppingCartIdentifier}}/checkout",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"ShoppingCart",
+								"{{shoppingCartIdentifier}}",
+								"checkout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "23_Get-shoppingCartCheckoutPersonOptions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Crearing environment variable",
+									"postman.clearEnvironmentVariable(\"selfLink\");",
+									"postman.clearEnvironmentVariable(\"personoptionsLink\");",
+									"postman.clearEnvironmentVariable(\"PaymentoptionssLink\");",
+									"postman.clearEnvironmentVariable(\"CountriesLink\");",
+									"postman.clearEnvironmentVariable(\"checkoutLink\");",
+									"postman.clearEnvironmentVariable(\"validatecheckoutLink\");",
+									"postman.clearEnvironmentVariable(\"ContactDetails\");",
+									"postman.clearEnvironmentVariable(\"SelectedPaymentOption\");",
+									"postman.clearEnvironmentVariable(\"IsCompanyFlag\");",
+									"",
+									"",
+									"//Valid HTTP Status code",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Body matches string\"] = responseBody.has(\"ShoppingCart\");",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data = jsonData._links;",
+									"tests[\"selfLink is not null\"] = postman.setGlobalVariable(\"selfLink\", data[\"self\"].href) !== null;",
+									"",
+									" tests[\"selfLink is not null\"] = (jsonData.PersonOptions > \"0\");",
+									"",
+									"",
+									"",
+									"",
+									"postman.setGlobalVariable(\"PersonOptionIdentifier\", jsonData.PersonOptions[0].Reference);",
+									"",
+									"postman.setGlobalVariable(\"PersonOption2Identifier\", jsonData.PersonOptions[1].Reference);",
+									"//postman.setGlobalVariable(\"PassengerOptionsCount\", jsonData.PersonOptions.size)>0;"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/ShoppingCart/{{shoppingCartIdentifier}}/Checkout/PersonOptions",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"ShoppingCart",
+								"{{shoppingCartIdentifier}}",
+								"Checkout",
+								"PersonOptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "24_Put-selectedFlightPassenger",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//postman.setEnvironmentVariable(\"FrequentFlyerAirlineCode\", \"KL\");",
+									"",
+									"//postman.setEnvironmentVariable(\"FrequentFlyerNumber\", \"1234567890\");"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Crearing environment variable",
+									"postman.clearEnvironmentVariable(\"selfLink\");",
+									"//Valid HTTP Status code",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Body matches string\"] = responseBody.has(\"[]\");",
+									"",
+									"//assert links",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data = jsonData._links;",
+									"tests[\"selfLink is not null\"] = postman.setGlobalVariable(\"selfLink\", data[\"self\"].href) !== null;",
+									"tests[\"mealPreferenceLink is not null\"] = postman.setGlobalVariable(\"mealPreferenceLink\", data[\"lookup:mealpreferenceoptions\"].href) !== null;",
+									"tests[\"seatPreferenceLink is not null\"] = postman.setGlobalVariable(\"seatPreferenceLink\", data[\"lookup:seatpreferenceoptions\"].href) !== null;",
+									"tests[\"baggageServiceLink is not null\"] = postman.setGlobalVariable(\"baggageServiceLink\", data[\"lookup:baggageserviceoptions\"].href) !== null;",
+									"tests[\"updatePassengerLink is not null\"] = postman.setGlobalVariable(\"updatePassengerLink\", data[\"update:passenger\"].href) !== null;",
+									"",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data = jsonData.SelectedPerson;",
+									"tests[\"FirstName is not null\"] = postman.setGlobalVariable(\"FirstName\", data[\"FirstName\"]) !== null;",
+									"tests[\"LastName is not null\"] = postman.setGlobalVariable(\"LastName\", data[\"LastName\"]) !== null;",
+									"tests[\"DateOfBirth is not null\"] = postman.setGlobalVariable(\"DateOfBirth\", data[\"DateOfBirth\"]) !== null;",
+									"",
+									"",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"identifier\":\"{{PassengerIdentifier}}\",\r\n \"SelectedPerson\":\r\n  {\r\n     \"Reference\": \"{{PersonOptionIdentifier}}\",\r\n     \"GenderType\": \"Male\",\r\n     \"FirstName\": \"XMR\",\r\n     \"LastName\": \"MONTYS\",\r\n     \"DateOfBirth\": \"1987-11-06\"\r\n      },\r\n \"FrequentFlyer\":{\r\n\t\"AirlineCode\": \"{{FrequentFlyerAirlineCode}}\",\r\n\t\"FrequentFlyerNumber\": \"{{FrequentFlyerNumber}}\"\r\n\r\n\t},\r\n \"SelectedBaggageService\":null,\r\n \"SelectedSeatPreference\":null,\r\n \"SelectedMealPreference\":null\r\n}"
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/SelectedFlight/{{FlightBookingIdentifier}}/Passengers/{{PassengerIdentifier}}/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"SelectedFlight",
+								"{{FlightBookingIdentifier}}",
+								"Passengers",
+								"{{PassengerIdentifier}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "24.1_Put-selectedFlightPassenger-2",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//postman.setEnvironmentVariable(\"FrequentFlyerAirlineCode\", \"KL\");",
+									"",
+									"//postman.setEnvironmentVariable(\"FrequentFlyerNumber\", \"1234567890\");"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Crearing environment variable",
+									"postman.clearEnvironmentVariable(\"selfLink\");",
+									"postman.clearEnvironmentVariable(\"mealPreferenceLink\");",
+									"postman.clearEnvironmentVariable(\"seatPreferenceLink\");",
+									"postman.clearEnvironmentVariable(\"updatePassengerLink\");",
+									"postman.clearEnvironmentVariable(\"FirstName\");",
+									"postman.clearEnvironmentVariable(\"LastName\");",
+									"postman.clearEnvironmentVariable(\"DateOfBirth\");",
+									"",
+									"//Valid HTTP Status code",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Body matches string\"] = responseBody.has(\"[]\");",
+									"",
+									"//assert links",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data = jsonData._links;",
+									"tests[\"selfLink is not null\"] = postman.setGlobalVariable(\"selfLink\", data[\"self\"].href) !== null;",
+									"tests[\"mealPreferenceLink is not null\"] = postman.setGlobalVariable(\"mealPreferenceLink\", data[\"lookup:mealpreferenceoptions\"].href) !== null;",
+									"tests[\"seatPreferenceLink is not null\"] = postman.setGlobalVariable(\"seatPreferenceLink\", data[\"lookup:seatpreferenceoptions\"].href) !== null;",
+									"tests[\"baggageServiceLink is not null\"] = postman.setGlobalVariable(\"baggageServiceLink\", data[\"lookup:baggageserviceoptions\"].href) !== null;",
+									"tests[\"updatePassengerLink is not null\"] = postman.setGlobalVariable(\"updatePassengerLink\", data[\"update:passenger\"].href) !== null;",
+									"",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data = jsonData.SelectedPerson;",
+									"tests[\"FirstName is not null\"] = postman.setGlobalVariable(\"FirstName\", data[\"FirstName\"]) !== null;",
+									"tests[\"LastName is not null\"] = postman.setGlobalVariable(\"LastName\", data[\"LastName\"]) !== null;",
+									"tests[\"DateOfBirth is not null\"] = postman.setGlobalVariable(\"DateOfBirth\", data[\"DateOfBirth\"]) !== null;",
+									"",
+									"",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"identifier\":\"{{Passenger2Identifier}}\",\r\n \"SelectedPerson\":\r\n  {\r\n     \"Reference\": \"{{PersonOption2Identifier}}\",\r\n     \"GenderType\": \"Male\",\r\n     \"FirstName\": \"XMR\",\r\n     \"LastName\": \"MONTYS\",\r\n     \"DateOfBirth\": \"1987-11-06\"\r\n      },\r\n \"FrequentFlyer\":{\r\n\t\"AirlineCode\": \"{{FrequentFlyerAirlineCode}}\",\r\n\t\"FrequentFlyerNumber\": \"{{FrequentFlyerNumber}}\"\r\n\r\n\t},\r\n \"SelectedBaggageService\":null,\r\n \"SelectedSeatPreference\":null,\r\n \"SelectedMealPreference\":null\r\n}"
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/SelectedFlight/{{FlightBookingIdentifier}}/Passengers/{{PassengerIdentifier}}/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"SelectedFlight",
+								"{{FlightBookingIdentifier}}",
+								"Passengers",
+								"{{PassengerIdentifier}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "25_Get-SelectedFlightPassenger",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Crearing environment variable",
+									"postman.clearEnvironmentVariable(\"selfLink\");",
+									"postman.clearEnvironmentVariable(\"mealPreferenceLink\");",
+									"postman.clearEnvironmentVariable(\"seatPreferenceLink\");",
+									"postman.clearEnvironmentVariable(\"updatePassengerLink\");",
+									"postman.clearEnvironmentVariable(\"FirstName\");",
+									"postman.clearEnvironmentVariable(\"LastName\");",
+									"postman.clearEnvironmentVariable(\"DateOfBirth\");",
+									"",
+									"//Valid HTTP Status code",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Body matches string\"] = responseBody.has(\"[]\");",
+									"",
+									"//assert links",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data = jsonData[0]._links;",
+									"tests[\"selfLink is not null\"] = postman.setGlobalVariable(\"selfLink\", data[\"self\"].href) !== null;",
+									"tests[\"mealPreferenceLink is not null\"] = postman.setGlobalVariable(\"mealPreferenceLink\", data[\"lookup:mealpreferenceoptions\"].href) !== null;",
+									"tests[\"seatPreferenceLink is not null\"] = postman.setGlobalVariable(\"seatPreferenceLink\", data[\"lookup:seatpreferenceoptions\"].href) !== null;",
+									"tests[\"baggageServiceLink is not null\"] = postman.setGlobalVariable(\"baggageServiceLink\", data[\"lookup:baggageserviceoptions\"].href) !== null;",
+									"tests[\"updatePassengerLink is not null\"] = postman.setGlobalVariable(\"updatePassengerLink\", data[\"update:passenger\"].href) !== null;",
+									"",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data = jsonData[0].SelectedPerson;",
+									"tests[\"FirstName is not null\"] = postman.setGlobalVariable(\"FirstName\", data[\"FirstName\"]) !== null;",
+									"tests[\"LastName is not null\"] = postman.setGlobalVariable(\"LastName\", data[\"LastName\"]) !== null;",
+									"tests[\"DateOfBirth is not null\"] = postman.setGlobalVariable(\"DateOfBirth\", data[\"DateOfBirth\"]) !== null;",
+									"",
+									"",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/SelectedFlight/{{FlightBookingIdentifier}}/Passengers",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"SelectedFlight",
+								"{{FlightBookingIdentifier}}",
+								"Passengers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "26_Get-ShoppingCart-Latest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Crearing environment variable",
+									"postman.clearEnvironmentVariable(\"selfLink\");",
+									"postman.clearEnvironmentVariable(\"mealPreferenceLink\");",
+									"postman.clearEnvironmentVariable(\"seatPreferenceLink\");",
+									"postman.clearEnvironmentVariable(\"updatePassengerLink\");",
+									"postman.clearEnvironmentVariable(\"FirstName\");",
+									"postman.clearEnvironmentVariable(\"LastName\");",
+									"postman.clearEnvironmentVariable(\"DateOfBirth\");",
+									"",
+									"//Valid HTTP Status code",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Body matches string\"] = responseBody.has(\"ShoppingCart\");",
+									"",
+									"//assert links",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data = jsonData._links;",
+									"tests[\"selfLink is not null\"] = postman.setGlobalVariable(\"selfLink\", data[\"self\"].href) !== null;",
+									"tests[\"chekOutLink is not null\"] = postman.setGlobalVariable(\"chekOutLink\", data[\"navigate:checkout\"].href) !== null;",
+									"tests[\"addProductLink is not null\"] = postman.setGlobalVariable(\"addProductLink\", data[\"add:product\"].href) !== null;",
+									"tests[\"addAdditionaProductLink is not null\"] = postman.setGlobalVariable(\"addAdditionaProductLink\", data[\"add:additionalproduct\"].href) !== null;"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/shoppingcart/{{shoppingCartIdentifier}}",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"shoppingcart",
+								"{{shoppingCartIdentifier}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "27_Get - ShoppingCartCheckoutPaymentOptions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Crearing environment variable",
+									"postman.clearEnvironmentVariable(\"selfLink\");",
+									"postman.clearEnvironmentVariable(\"chekOutLink\");",
+									"postman.clearEnvironmentVariable(\"addProductLink\");",
+									"postman.clearEnvironmentVariable(\"addAdditionaProductLink\");",
+									"",
+									"",
+									"//Valid HTTP Status code",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Body matches string\"] = responseBody.has(\"ShoppingCart\");",
+									"",
+									"//assert",
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"var data = [];",
+									"data = jsonData._links;",
+									"tests[\"selfLink is not null\"] = postman.setGlobalVariable(\"selfLink\", data[\"self\"].href) !== null;",
+									"",
+									"//data = jsonData;",
+									"//tests[\"PaymentOptions is not null\"] = postman.setGlobalVariable(\"PaymentOptions\", data[\"PaymentOptions\"]) > \"0\";",
+									"",
+									"",
+									"postman.setGlobalVariable(\"SelectedPaymentCode\", jsonData.PaymentOptions[3].Code);",
+									"//boolean IsValidPaymentCode = false;",
+									"",
+									"",
+									"",
+									"",
+									"//for(int i=0;i<jsonData.PaymentOptions.size;i++)",
+									"//{",
+									"//\tif(jsonObj.PaymentOptions[i].Code.equalsIgnoreCase(PaymentCode))",
+									"//\t{",
+									"//\t\tIsValidPaymentCode = true;",
+									"\t",
+									"//\tpostman.setGlobalVariable(\"SelectedPaymentCode\", jsonData.PaymentOptions[3].Code);",
+									"//\t\tbreak;",
+									"//\t\t}",
+									"//\t}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/ShoppingCart/{{shoppingCartIdentifier}}/Checkout/PaymentOptions",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"ShoppingCart",
+								"{{shoppingCartIdentifier}}",
+								"Checkout",
+								"PaymentOptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "28_Put - ShoppingCartCheckout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Crearing environment variable",
+									"postman.clearEnvironmentVariable(\"selfLink\");",
+									"",
+									"//Valid HTTP Status code",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Body matches string\"] != responseBody.has(\"[]\");",
+									"",
+									"//assert links",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data = jsonData._links;",
+									"tests[\"selfLink is not null\"] = postman.setGlobalVariable(\"selfLink\", data[\"self\"].href) !== null;",
+									"tests[\"personOptionsLink is not null\"] = postman.setGlobalVariable(\"personOptionsLink\", data[\"lookup:personoptions\"].href) !== null;",
+									"tests[\"paymentOptionsLink is not null\"] = postman.setGlobalVariable(\"paymentOptionsLink\", data[\"lookup:paymentoptions\"].href) !== null;",
+									"tests[\"countryOptionsLink is not null\"] = postman.setGlobalVariable(\"countryOptionsLink\", data[\"lookup:countries\"].href) !== null;",
+									"tests[\"checkoutLink is not null\"] = postman.setGlobalVariable(\"checkoutLink\", data[\"update:checkout\"].href) !== null;",
+									"tests[\"orderCreateLink is not null\"] = postman.setGlobalVariable(\"orderCreateLink\", data[\"navigate:createorder\"].href) !== null;",
+									"",
+									"var data = [];",
+									"data = jsonData.SelectedPaymentOption;",
+									"tests[\"SelectedPaymentOption is not null\"] = postman.setGlobalVariable(\"SelectedPaymentOption\", data[\"SelectedPaymentOption\"]) !== null;",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"ContactDetails\":\r\n  {\r\n   \"Street\":\"Joop King\",\r\n   \"HouseNumber\": \"313\",\r\n   \"ZipCode\": \"1096 AA\",\r\n   \"City\": \"AMSTERDAM\",\r\n   \"CountryCode\": \"NL\",\r\n   \"EmailAddress\":\"ignore@address.com\",\r\n   \"PhoneNumber\": \"741258963\",\r\n   \"IsCompany\": \"{{IsCompany}}\",\r\n   \"CompanyName\": \"{{CompanyName}}\",\r\n   \"BluebizzNumber\": \"{{BluebizzNumber}}\",\r\n   \"HomeStayer\":\r\n   {\r\n    \"GenderType\": \"Male\",\r\n    \"FirstName\": \"Sam\",\r\n    \"LastName\" : \"Truce\",\r\n    \"DateOfBirth\": \"1983-02-03\",\r\n    \"PhoneNumber\": \"1234567890\"\r\n   },\r\n   \"SelectedPerson\":\r\n   {\r\n    \"Reference\": \"{{PersonOptionIdentifier}}\",\r\n    \"GenderType\": \"Male\",\r\n    \"FirstName\": \"XMR\",\r\n    \"LastName\" : \"MONTYS\",\r\n    \"DateOfBirth\": \"1980-01-02\"\r\n   }\r\n   \r\n  },\r\n  \"SelectedPaymentOption\":\r\n  {\r\n   \"Code\": \"{{SelectedPaymentCode}}\"\r\n  }\r\n\r\n}"
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/ShoppingCart/{{shoppingCartIdentifier}}/Checkout/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"ShoppingCart",
+								"{{shoppingCartIdentifier}}",
+								"Checkout",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "29_Get - ShoppingCartCheckoutValidation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Crearing environment variable",
+									"postman.clearEnvironmentVariable(\"selfLink\");",
+									"postman.clearEnvironmentVariable(\"personOptionsLink\");",
+									"postman.clearEnvironmentVariable(\"paymentOptionsLink\");",
+									"postman.clearEnvironmentVariable(\"countryOptionsLink\");",
+									"postman.clearEnvironmentVariable(\"checkoutLink\");",
+									"postman.clearEnvironmentVariable(\"orderCreateLink\");",
+									"postman.clearEnvironmentVariable(\"SelectedPaymentOption\");",
+									"",
+									"//Valid HTTP Status code",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"//tests[\"Body matches string\"] = responseBody.has(\"ShoppingCart\");",
+									"//assert status",
+									"var jsonData = JSON.parse(responseBody);",
+									"if(jsonData.Status!=\"Valid\")",
+									"{",
+									"    console.log(\"false:Checkout validation failed.\");",
+									" ",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/ShoppingCartCheckoutValidate/{{shoppingCartIdentifier}}/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"ShoppingCartCheckoutValidate",
+								"{{shoppingCartIdentifier}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "32_Post - Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//Takes one of the elements of the response Header",
+									"tests[\"Location is present\"] = postman.getResponseHeader(\"Location\");",
+									"",
+									"//Read this value into a parameter",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setGlobalVariable(\"OrderIdentifier\", jsonData.Data.substring(67));",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ExternalReference\": \"Ex-Ref-Test\",\r\n    \"CustomParameters\": [\r\n        {\r\n            \"name\": \"test0\",\r\n            \"value\": \"testvalue0\"\r\n        },\r\n        {\r\n            \"name\": \"test1\",\r\n            \"value\": \"testvalue1\"\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/Order/{{shoppingCartIdentifier}}/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"Order",
+								"{{shoppingCartIdentifier}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "33_Get-Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//responsecode\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"//assertlinks\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"var data = [];\r",
+									"data =jsonData._links;\r",
+									"\r",
+									"\r",
+									"tests[\"selflink is not null\"]=postman.setGlobalVariable(\"selflink\",data[\"self\"].href)  !== null;\r",
+									"tests[\"confirmationLink is not null\"] = postman.setGlobalVariable(\"confirmationLink\",data[\"navigate:confirmation\"].href)!== null;\r",
+									"tests[\"summaryLink is not null\"] = postman.setGlobalVariable(\"navigate:summarylink\",data[\"navigate:summary\"].href)!== null;\r",
+									"\r",
+									"\r",
+									"\r",
+									"data =jsonData._embedded;\r",
+									"tests[\"Payment link is not null\"] = postman.setGlobalVariable(\"Paymentlink\",data[\"Payment\"].href)!== null;\r",
+									" \r",
+									"\r",
+									"data =jsonData._embedded.Payment._links;\r",
+									"tests[\"paymentSelfLink is not null\"] = postman.setGlobalVariable(\"Paymentselflink1\") !== null;\r",
+									"tests[\"cancel:payment link is not null\"] = postman.setGlobalVariable(\"cancel:payment\") !== null;\r",
+									"tests[\"navigate:paymentgateway link is not null\"] = postman.setGlobalVariable(\"navigate:paymentgateway\") !== null;"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/Order/{{OrderIdentifier}}/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"Order",
+								"{{OrderIdentifier}}",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "for lowcost flight"
+		}
+	]
+}

@@ -1,0 +1,510 @@
+{
+	"info": {
+		"_postman_id": "493b25fb-1762-7eca-a6ea-be5286975585",
+		"name": "Untitled Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "TestSearchFlight - IntegrationTest",
+			"item": []
+		},
+		{
+			"name": "TestSearchCombinedProducts_FlighHotelCar",
+			"item": [
+				{
+					"name": "01-Get - Root",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{AccountCode}}",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{AccountCode}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TestSearchFlightAndCharter-IntegrationTest",
+			"item": [
+				{
+					"name": "01-Get - Root",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//statuscode",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{AccountCode}}",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{AccountCode}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02-Post - UserSession",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//statuscode",
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+									"});",
+									"",
+									"//headerlocation",
+									"pm.test(\"Location is present\", function () {",
+									"    pm.response.to.have.header(\"Location\");",
+									"});",
+									"",
+									"//SessionIdentifier",
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.globals.set(\"SessionIdentifier\", jsonData.Data.substring(36));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"UserCredentials\": {\r\n\t\t\"Name\":\"{{userName}}\",\r\n\t\t\"Password\":\"{{userPassword}}\"\r\n\t},\r\n\t\"AccountCode\" : \"{{accountCode}}\",\r\n\t\"Digest\" : \"{{Digest}}\",\r\n\t\"UserToken\": \"\",\r\n\t\"ApplicationType\": \"{{ApplicationType}}\",\r\n\t\"CultureCode\": \"{{Culture}}\",\r\n\t\"Debug\": \"{{Debug}}\",\r\n\t\"AffiliateCode\": \"{{Affiliate}}\",\r\n\t\"ChannelCode\" : \"{{Channel}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/usersession/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"usersession",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03-Get - UserSession",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//statuscode",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/usersession/{{SessionIdentifier}}/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"usersession",
+								"{{SessionIdentifier}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04-Get - AirlineLookup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//statuscode",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//assertlink",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data =jsonData._links;",
+									"",
+									"//selflink",
+									"postman.setGlobalVariable(\"selflink\",data[\"self\"].href);",
+									"tests[\"self link is not null\"] = postman.getGlobalVariable(\"selflink\") !== null;",
+									"",
+									"data =jsonData;",
+									"",
+									"//Airlines",
+									"postman.setGlobalVariable(\"Airlines\",data[\"Airlines\"]);",
+									"tests[\"Airlines is not null\"] = postman.getGlobalVariable(\"Airlines\") !== null;"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/lookup/airlines",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"lookup",
+								"airlines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05-Get- AllianceLookup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//clear",
+									"pm.globals.unset(\"selflink\");",
+									"pm.globals.unset(\"selflink\");",
+									"//statuscode",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//assertlink",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data =jsonData._links;",
+									"",
+									"//selflink",
+									"postman.setGlobalVariable(\"selflink\",data[\"self\"].href);",
+									"tests[\"self link is not null\"] = postman.getGlobalVariable(\"selflink\") !== null;",
+									"",
+									"data =jsonData;",
+									"",
+									"//alliances",
+									"postman.setGlobalVariable(\"Alliances\",data[\"Alliances\"]);",
+									"tests[\"Alliances is not null\"] = postman.getGlobalVariable(\"Alliances\") !== null;"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/lookup/alliances",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"lookup",
+								"alliances"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "06-Get- AirportLookup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//statuscode",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//assertlink",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data =jsonData._links;",
+									"",
+									"//selflink",
+									"postman.setGlobalVariable(\"selflink\",data[\"self\"].href);",
+									"tests[\"self link is not null\"] = postman.getGlobalVariable(\"selflink\") !== null;",
+									"",
+									"data =jsonData;",
+									"",
+									"//Airports",
+									"postman.setGlobalVariable(\"Airports\",data[\"Airports\"]);",
+									"tests[\"Airports is not null\"] = postman.getGlobalVariable(\"Airports\") !== null;"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/lookup/airports?namelike=ams",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"lookup",
+								"airports"
+							],
+							"query": [
+								{
+									"key": "namelike",
+									"value": "ams"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "07-Get- CountryLookup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//statuscode",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//assertlink",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data =jsonData._links;",
+									"",
+									"//selflink",
+									"postman.setGlobalVariable(\"selflink\",data[\"self\"].href);",
+									"tests[\"self link is not null\"] = postman.getGlobalVariable(\"selflink\") !== null;",
+									"",
+									"data =jsonData;",
+									"",
+									"//Countries",
+									"postman.setGlobalVariable(\"Countries\",data[\"Countries\"]);",
+									"tests[\"Countries is not null\"] = postman.getGlobalVariable(\"Countries\") !== null;"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/lookup/countries/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"lookup",
+								"countries",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "08-Get - Flight Search Options",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//statuscode",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//assertlink",
+									"var jsonData = JSON.parse(responseBody);",
+									"var data = [];",
+									"data =jsonData._links;",
+									"",
+									"//selflink",
+									"postman.setGlobalVariable(\"selflink\",data[\"self\"].href);",
+									"tests[\"self link is not null\"] = postman.getGlobalVariable(\"selflink\") !== null;",
+									"",
+									"//groupedresultlist",
+									"postman.setGlobalVariable(\"navigate:groupedresultlist\",data[\"navigate:groupedresultlist\"].href);",
+									"tests[\"navigate:groupedresultlist link is not null\"] = postman.getGlobalVariable(\"navigate:groupedresultlist\") !== null;",
+									"",
+									"//airports",
+									"postman.setGlobalVariable(\"lookup:airports\",data[\"lookup:airports\"].href);",
+									"tests[\"lookup:airports link is not null\"] = postman.getGlobalVariable(\"lookup:airports\") !== null;",
+									"",
+									"//alliances",
+									"postman.setGlobalVariable(\"lookup:alliances\",data[\"lookup:alliances\"].href);",
+									"tests[\"lookup:alliances link is not null\"] = postman.getGlobalVariable(\"lookup:alliances\") !== null;",
+									"",
+									"//airlines",
+									"postman.setGlobalVariable(\"lookup:airlines\",data[\"lookup:airlines\"]);",
+									"tests[\"lookup:airlines link is not null\"] = postman.getGlobalVariable(\"lookup:airlines link\") !== null;"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/FlightOptions/SearchOptions/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"FlightOptions",
+								"SearchOptions",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "09-Post - Search Flight",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//statuscode",
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+									"});",
+									"",
+									"//headerlocation",
+									"pm.test(\"Location is present\", function () {",
+									"    pm.response.to.have.header(\"Location\");",
+									"});",
+									"",
+									"//GroupedResultIdentifier",
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.globals.set(\"GroupedResultIdentifier\", jsonData.Data.substring(72));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"PassengerAndPreferenceCriteria\":\r\n{\r\n    \"NumberOfAdults\": \"{{NumberOfAdults}}\",\r\n    \"NumberOfChildren\": \"{{NumberOfChildren}}\",\r\n    \"NumberOfInfants\": \"{{NumberOfInfants}}\",\r\n    \"CabinClass\": \"{{CabinClass}}\",\r\n    \"AirlinePreferenceCode\": \"{{AirlineCode}}\",\r\n    \"AlliancePerferenceCode\": \"\",\r\n    \"NonstopOnly\": \"false\",\r\n    \"UseRadius\": \"false\"\r\n},\r\n\"LegCriterias\":[\r\n{\r\n    \"LegNumber\":\"0\",\r\n    \"DepartureCode\":\"{{DepartureAirportCode}}\",\r\n    \"ArrivalCode\":\"{{ArrivalAirportCode}}\",\r\n    \"DepartureDate\":\"{{DepartureDate}}\",\r\n    \"DepartureTime\":\"11:00\",\r\n    \"UseTimePreference\":\"false\"\r\n},\r\n{\r\n    \"LegNumber\":\"1\",\r\n    \"DepartureCode\":\"{{ArrivalAirportCode}}\",\r\n    \"ArrivalCode\":\"{{DepartureAirportCode}}\",\r\n    \"DepartureDate\":\"{{ReturnDate}}\",\r\n    \"DepartureTime\":\"11:00\",\r\n    \"UseTimePreference\":\"false\"\r\n}\r\n],\r\n\r\n\"CustomSearchParams\": [\r\n {\r\n    \"name\": \"CorporateCode\",\r\n    \"value\": \"221892\"\r\n }\r\n]\r\n}"
+						},
+						"url": {
+							"raw": "{{Ip}}:{{Port}}/{{SessionIdentifier}}/FlightOptions/GroupedResultList/",
+							"host": [
+								"{{Ip}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"{{SessionIdentifier}}",
+								"FlightOptions",
+								"GroupedResultList",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
