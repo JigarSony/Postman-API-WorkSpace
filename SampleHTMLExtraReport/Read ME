@@ -1,0 +1,14 @@
+Read ME---
+https://www.npmjs.com/package/newman-reporter-htmlextra
+https://www.youtube.com/watch?v=EkrNGZxT0_k
+https://support.getpostman.com/hc/en-us/articles/115003703325-How-do-I-install-Newman-
+https://learning.getpostman.com/docs/postman/collection_runs/command_line_integration_with_newman/
+
+
+
+------
+RUN
+--------
+Export Collection
+
+npm run mycollection.json --reporters htmlextra
